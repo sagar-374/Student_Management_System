@@ -6,41 +6,41 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const[formdata,setformdata] = useState({
-  name:"",
-  email:"",
-  password:"",
-  contact:"",
-});
+  const [formdata, setformdata] = useState({
+    name: "",
+    email: "",
+    password: "",
+    contact: "",
+  });
 
-const handleChange = (e) => {
-  setformdata({...formdata,[e.target.name]:e.target.value});
-}
+  const handleChange = (e) => {
+    setformdata({ ...formdata, [e.target.name]: e.target.value });
+  };
 
-const formsubmit = async (e) => {
-  e.preventDefault();    //avoid form refresh
-  //console.log(formdata);
-  //alert("Registration Successfully Completed");
-  //backend
+  const formsubmit = async (e) => {
+    e.preventDefault();
 
-  try{
-    await axios.post("http://localhost:8085/register",formdata);
-    alert("Registration Successfully Completed");
+    try {
+      const API = import.meta.env.VITE_API_URL;
 
-    setformdata({
-      name:"",
-      email:"",
-      password:"",
-      contact:"",
-    });
+      await axios.post(`${API}/register`, formdata);
 
-    navigate("/student_list");    //redirect
+      alert("Registration Successfully Completed");
 
-  }catch(err){
-    console.log(err);
-    alert("Fail");
-  }
-}
+      setformdata({
+        name: "",
+        email: "",
+        password: "",
+        contact: "",
+      });
+
+      navigate("/student_list");
+
+    } catch (err) {
+      console.log(err);
+      alert("Fail");
+    }
+  };
 
   return (
     <>
@@ -51,14 +51,39 @@ const formsubmit = async (e) => {
           <h1>Registration Form</h1><br />
 
           <form onSubmit={formsubmit}>
-            <input type="text" placeholder="Enter your name" className='form-control' name="name" value={formdata.name} onChange={handleChange}/><br />
-            <input type="email" placeholder="Enter your email" className='form-control' name="email" value={formdata.email} onChange={handleChange}/><br />
-            <input type="password" placeholder="Enter your password" className='form-control' name="password" value={formdata.password} onChange={handleChange}/><br />
-            <input type="number" placeholder="Enter your contact" className='form-control' name="contact" value={formdata.contact} onChange={handleChange}/><br />
+            <input type="text" placeholder="Enter your name"
+              className='form-control'
+              name="name"
+              value={formdata.name}
+              onChange={handleChange}
+            /><br />
+
+            <input type="email" placeholder="Enter your email"
+              className='form-control'
+              name="email"
+              value={formdata.email}
+              onChange={handleChange}
+            /><br />
+
+            <input type="password" placeholder="Enter your password"
+              className='form-control'
+              name="password"
+              value={formdata.password}
+              onChange={handleChange}
+            /><br />
+
+            <input type="number" placeholder="Enter your contact"
+              className='form-control'
+              name="contact"
+              value={formdata.contact}
+              onChange={handleChange}
+            /><br />
+
             <button className='btn btn-info'>Submit</button>
           </form>
 
         </div>
+
         <div className='col-sm-4'></div>
       </div>
     </>

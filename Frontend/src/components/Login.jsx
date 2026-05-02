@@ -6,31 +6,35 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const[formdata,setformdata] = useState({
-  email:"",
-  password:"",
-});
+  const [formdata, setformdata] = useState({
+    email: "",
+    password: "",
+  });
 
-const handleChange = (e) => {
-  setformdata({...formdata,[e.target.name]:e.target.value});
-}
+  const handleChange = (e) => {
+    setformdata({ ...formdata, [e.target.name]: e.target.value });
+  };
 
-const formsubmit = async (e) => {
-  e.preventDefault();
+  const formsubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await axios.post("http://localhost:8085/login",formdata);
-    alert("Login Successful");
-    localStorage.setItem("student", JSON.stringify(res.data));
-    navigate("/student_list"); 
-  } catch (error) {
-    if (error.response?.status === 401) {
-      alert("Invalid Email or Password");
-    } else {
-      alert("Server Error");
+    try {
+      const API = import.meta.env.VITE_API_URL;
+
+      const res = await axios.post(`${API}/login`, formdata);
+
+      alert("Login Successful");
+      localStorage.setItem("student", JSON.stringify(res.data));
+      navigate("/student_list");
+
+    } catch (error) {
+      if (error.response?.status === 401) {
+        alert("Invalid Email or Password");
+      } else {
+        alert("Server Error");
+      }
     }
-  }
-};
+  };
 
   return (
     <>
@@ -40,8 +44,20 @@ const formsubmit = async (e) => {
         <div className='col-sm-4'>
           <h1>Login Form</h1><br />
           <form onSubmit={formsubmit}>
-            <input type="email" placeholder="Enter your email" className='form-control' name="email" value={formdata.email} onChange={handleChange}/><br />
-            <input type="password" placeholder="Enter your password" className='form-control' name="password" value={formdata.password} onChange={handleChange}/><br />
+            <input type="email" placeholder="Enter your email"
+              className='form-control'
+              name="email"
+              value={formdata.email}
+              onChange={handleChange}
+            /><br />
+
+            <input type="password" placeholder="Enter your password"
+              className='form-control'
+              name="password"
+              value={formdata.password}
+              onChange={handleChange}
+            /><br />
+
             <button className='btn btn-info'>Submit</button>
           </form>
         </div>
